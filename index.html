@@ -16,8 +16,73 @@
       src="https://www.googletagmanager.com/gtag/js?id=G-R13B7T2SGY"
     ></script>
     <script src="/js/analytics.js"></script>
+    <script>
+      // New website popup functionality
+      document.addEventListener('DOMContentLoaded', function() {
+        const popup = document.getElementById('new-site-popup');
+        const closeBtn = document.getElementById('popup-close-btn');
+        const viewLegacyBtn = document.getElementById('view-legacy-btn');
+        
+        // Check if user has already dismissed the popup
+        const hasSeenPopup = localStorage.getItem('pragmaticpapers-popup-dismissed');
+        
+        if (hasSeenPopup) {
+          popup.style.display = 'none';
+        }
+        
+        // Close popup functionality
+        function closePopup() {
+          popup.classList.add('hidden');
+          setTimeout(() => {
+            popup.style.display = 'none';
+            // Remember that user has seen the popup
+            localStorage.setItem('pragmaticpapers-popup-dismissed', 'true');
+          }, 300);
+        }
+        
+        // Event listeners
+        closeBtn.addEventListener('click', closePopup);
+        viewLegacyBtn.addEventListener('click', closePopup);
+        
+        // Close popup when clicking outside of it
+        popup.addEventListener('click', function(e) {
+          if (e.target === popup) {
+            closePopup();
+          }
+        });
+        
+        // Close popup with Escape key
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape' && popup.style.display !== 'none') {
+            closePopup();
+          }
+        });
+      });
+    </script>
   </head>
   <body>
+    <!-- New Website Popup -->
+    <div id="new-site-popup" class="popup-overlay">
+      <div class="popup-content">
+        <div class="popup-header">
+          <h3>We've Moved!</h3>
+          <button class="popup-close" id="popup-close-btn" aria-label="Close popup">&times;</button>
+        </div>
+        <div class="popup-body">
+          <p>The Pragmatic Papers has moved to a new home!</p>
+          <p>Visit our updated website at <strong>pragmaticpapers.com</strong> for the latest content and improved experience.</p>
+          <div class="popup-buttons">
+            <a href="https://pragmaticpapers.com/" class="popup-btn primary" target="_blank" rel="noopener noreferrer">
+              Visit New Site
+            </a>
+            <button class="popup-btn secondary" id="view-legacy-btn">
+              View Legacy Site
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <header>
       <img
         class="logo"
